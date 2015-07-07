@@ -26,6 +26,14 @@ if(targetDir) {
 			pattern = "%level %logger - %msg%n"
 		}
 	}
+	appender("MAIN_LOG", FileAppender) {
+		
+		file = "${targetDir}/nla_mock_main.log"
+		append = true
+		encoder(PatternLayoutEncoder) {
+			pattern = "%d{HH:mm:ss.SSS} |- %level %logger - %msg%n"
+		}
+	}
 	logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false )
 	logger "au.com.redboxresearchdata.cm", DEBUG, ['STDOUT', 'MAIN_LOG'], false
 }

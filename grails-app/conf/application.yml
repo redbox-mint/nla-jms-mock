@@ -1,4 +1,6 @@
 ---
+server:
+    port: 8081
 grails:
     profile: web
     codegen:

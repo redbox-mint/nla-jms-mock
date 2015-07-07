@@ -39,22 +39,22 @@ class JmsSink {
 			broker.start();
 		}
 		t = Thread.start {
-			use(JmsCategory) {
-				def jms = new ActiveMQConnectionFactory("tcp://localhost:${portNum}")
-				jms.connect { c ->
-				  c.queue("oaiPmhFeed") { q ->
-					  println "Starting to listen on port: ${portNum}"
-					  q.listen { msg ->
-						  println "Received Message: ${msg}"
-					  }
-					  synchronized(shouldRun) {
-						  if (shouldRun) {
+			synchronized(shouldRun) {
+				use(JmsCategory) {
+					def jms = new ActiveMQConnectionFactory("tcp://localhost:${portNum}")
+					jms.connect { c ->
+					  c.queue("oaiPmhFeed") { q ->
+						  println "Starting to listen on port: ${portNum}"
+						  q.listen { msg ->
+							  println "Received Message: ${msg}"
+						  }
+						  while (shouldRun) {
 							  Thread.sleep(10)
 						  }
 					  }
-				  }
+					}
 				}
-			}
+			}	
 		}
 	}
 	
