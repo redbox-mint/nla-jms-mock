@@ -15,6 +15,7 @@ package au.com.redboxresearchdata.cm.mock
  */
 class NlaServiceController {
 
+	def poorMansCtr = 0 // this must be a singleton
 	/**
 	 * 
 	 * @return NLA Party ID that is a concatenation of the 'rec.identifier' 
@@ -25,8 +26,22 @@ class NlaServiceController {
 		def recId = query.split('=')[1].replaceAll('\"', '')
 		log.debug "Record ID: ${recId}"
 		def data = ''
+		def templateFile = 'templates/srutemplate.xml'
+		if (recId.startsWith('integration-test-delay-me')) {
+			// when running on this mode, ensure that no other requests are hitting this controller at the same time
+			// so when in Jenkins or any CI environment, do your homework in properly setting up the right build configuration.
+			def recIdParts = recId.split("_")
+			def maxCtr = Integer.parseInt(recIdParts[1])
+			println "Poor Man's ctr: ${poorMansCtr}, Max Ctr: ${maxCtr}"
+			if (poorMansCtr == maxCtr) {
+				poorMansCtr = 0
+			} else {
+				poorMansCtr++
+				templateFile = 'templates/sru_norecords.xml'
+			}
+		}
 		if (recId) {
-			data = this.class.classLoader.getResourceAsStream('templates/srutemplate.xml').text
+			data = this.class.classLoader.getResourceAsStream(templateFile).text
 			data = data.replaceAll('OID', recId) 
 		}
 		render(text: data, contentType:'text/xml', encoding:'UTF-8')

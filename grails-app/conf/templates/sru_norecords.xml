@@ -1,0 +1,19 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+<version>1.1</version>
+<numberOfRecords>0</numberOfRecords>
+<echoedSearchRetrieveRequest xmlns:ns1="http://www.loc.gov/zing/srw/">
+<version>1.1</version>
+<query>rec.identifier="OID"</query>
+<xQuery>
+<ns2:searchClause xmlns:ns2="http://www.loc.gov/zing/cql/xcql/">
+<ns2:index>rec.identifier</ns2:index>
+<ns2:relation>
+<ns2:value>=</ns2:value>
+</ns2:relation>
+<ns2:term>OID</ns2:term>
+</ns2:searchClause>
+</xQuery>
+<recordPacking>xml</recordPacking>
+<recordSchema>urn:isbn:1-931666-33-4</recordSchema>
+</echoedSearchRetrieveRequest>
+</searchRetrieveResponse>
